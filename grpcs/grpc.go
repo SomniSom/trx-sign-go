@@ -42,7 +42,7 @@ func (c *Client) SetTimeout(timeout time.Duration) error {
 }
 
 /*
-保持连接，如果中途连接失败，就重连
+Оставайтесь на связи, если соединение прервется на полпути, подключитесь повторно.
 */
 func (c *Client) keepConnect() error {
 	_, err := c.GRPC.GetNodeInfo()

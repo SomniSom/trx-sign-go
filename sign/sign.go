@@ -15,8 +15,8 @@ func SignTransaction(transaction *core.Transaction, privateKey string) (*core.Tr
 	if err != nil {
 		return nil, fmt.Errorf("hex decode private key error: %v", err)
 	}
-	priv := crypto.ToECDSAUnsafe(privateBytes)
-	defer zeroKey(priv)
+	key := crypto.ToECDSAUnsafe(privateBytes)
+	defer zeroKey(key)
 	rawData, err := proto.Marshal(transaction.GetRawData())
 	if err != nil {
 		return nil, fmt.Errorf("proto marshal tx raw data error: %v", err)
@@ -24,7 +24,7 @@ func SignTransaction(transaction *core.Transaction, privateKey string) (*core.Tr
 	h256h := sha256.New()
 	h256h.Write(rawData)
 	hash := h256h.Sum(nil)
-	signature, err := crypto.Sign(hash, priv)
+	signature, err := crypto.Sign(hash, key)
 	if err != nil {
 		return nil, fmt.Errorf("sign error: %v", err)
 	}
